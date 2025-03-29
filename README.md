@@ -2,6 +2,8 @@
 
 This project provides a Model Context Protocol (MCP) server that allows Claude AI (via the Claude Desktop app) or others to interact with the Google Search Console API. You can use it to query performance data, inspect URLs, check indexing status, and more, directly from your Claude chat (or others).
 
+You can follow me on X [@metehan777](https://x.com/metehan777) and visit my blog [https://metehan.ai](https://metehan.ai)
+
 ## Features
 
 Based on the available Google Search Console API endpoints allowed in this project:
@@ -67,8 +69,60 @@ Based on the available Google Search Console API endpoints allowed in this proje
     *   The first time a tool requiring authentication is run (either manually or via Claude), it will trigger the Google OAuth flow.
     *   Your web browser should open, asking you to log in to the Google Account that has access to your Search Console properties.
     *   Grant the requested permissions to the application you configured ("Claude GSC Tool").
-    *   After successful authorization, a `token.json` file will be created in your project directory. This stores your access token. **Do not commit `token.json` if you are going to fork this repo and push it again**.
+    *   After successful authorization, a `token.json` file will be created in your project directory. This stores your access token. **Do not commit `token.json` if you are going to fork this repo and push/pull it again**.
 
 ## Running the Server (Development/Testing)
 
 While the primary use is via Claude Desktop integration, you can test the server directly using `stdio` transport:
+The server will start and wait for JSON-RPC messages on standard input/output. You can press `Ctrl+C` to stop it. Logs will be printed to standard error.
+
+## Claude Desktop Integration
+
+To make the tools available in the Claude Desktop app:
+
+1.  **Locate Configuration File:** Find the Claude Desktop configuration file. On macOS, it's typically at:
+    `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+2.  **Edit Configuration:** Open the file in a text editor. Add or modify the `mcpServers` section to include an entry for this tool. Use the **absolute path** to the `python3` executable within your virtual environment.
+
+    ```json
+    {
+      "mcpServers": {
+        "filesystem": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-filesystem",
+            "/Users/username/Desktop",
+            "/Users/username/Downloads"
+          ]
+        },
+        "google-search-console": {
+          "command": "/Users/username/Documents/search-console-mcp/fresh_env/bin/python3",
+          "args": [
+            "-m",
+            "main"
+          ],
+          "cwd": "/Users/username/Cursor/search-console-mcp"
+        }
+      }
+    }
+    ```
+    *   **Important:** Replace `/Users/username/Documents/search-console-mcp` with the actual absolute path to your project directory on your system in both the `command` and `cwd` fields.
+    *   If you already have other servers in `mcpServers`, just add the `"google-search-console": { ... }` block alongside them.
+
+3.  **Restart Claude Desktop:** Close and reopen the Claude Desktop application for the changes to take effect.
+
+## Usage in Claude
+
+Once set up and integrated, you can ask Claude to use the tools. Examples:
+
+*   "List my sites in Google Search Console."
+*   "Get the search performance for example.com for the last 7 days, broken down by query."
+*   "Inspect the URL https://example.com/my-page on site example.com."
+*   "Are there any mobile usability issues for example.com?"
+*   "Submit https://example.com/new-article for indexing on site example.com."
+
+Claude should identify the appropriate tool and execute it via the MCP server. Remember to grant permissions during the initial authentication flow if prompted.
+
+You can contribute or suggest improvements anytime!
