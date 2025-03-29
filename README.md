@@ -27,10 +27,9 @@ Based on the available Google Search Console API endpoints allowed in this proje
 1.  **Clone or Download:**
     Get the project files onto your local machine. If using git:
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/metehan777/google-search-console-mcp.git
     cd search-console-mcp
     ```
-    *(Replace `<your-repository-url>` if applicable, otherwise just navigate to the downloaded directory)*
 
 2.  **Create and Activate Virtual Environment:**
     It's highly recommended to use a virtual environment to manage dependencies.
@@ -68,7 +67,7 @@ Based on the available Google Search Console API endpoints allowed in this proje
     *   The first time a tool requiring authentication is run (either manually or via Claude), it will trigger the Google OAuth flow.
     *   Your web browser should open, asking you to log in to the Google Account that has access to your Search Console properties.
     *   Grant the requested permissions to the application you configured ("Claude GSC Tool").
-    *   After successful authorization, a `token.json` file will be created in your project directory. This stores your access token. **Do not commit `token.json`**.
+    *   After successful authorization, a `token.json` file will be created in your project directory. This stores your access token. **Do not commit `token.json` if you are going to fork this repo and push it again**.
 
 ## Running the Server (Development/Testing)
 
