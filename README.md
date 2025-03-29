@@ -16,6 +16,8 @@ Based on the available Google Search Console API endpoints allowed in this proje
 
 *(Note: Index coverage details and crawl errors beyond what's available in the URL Inspection API are generally not exposed via the Google Search Console API.)*
 
+See the Search Console API capabilities & announcements here: [https://developers.google.com/webmaster-tools/v1/api_reference_index](https://developers.google.com/webmaster-tools/v1/api_reference_index?hl=tr)
+
 ## Prerequisites
 
 *   **Python:** Version 3.11 or higher.
